@@ -1,0 +1,17 @@
+package Principal;
+
+
+public class ClassePrincipal {
+	public static void main(String[] args) {	
+		Tocador tocador = new Tocador();
+		
+		String musica1 = "https://www.youtube.com/watch?v=8EQzx-OzQmU&list=PLbwbsDZRZvsQM932Jcu9pKvoOLbU5m6ei&index=5";
+		tocador.trocarMusica(musica1);
+		String musica2 = "https://youtu.be/ZXcsNRNhHHY?list=PLbwbsDZRZvsQM932Jcu9pKvoOLbU5m6ei";
+		tocador.trocarMusica(musica2);
+		String musica3 = "https://youtu.be/d020hcWA_Wg?list=PLbwbsDZRZvsQM932Jcu9pKvoOLbU5m6ei";
+		tocador.trocarMusica(musica3);
+		tocador.encerrarMusicas();
+	
+	}
+}

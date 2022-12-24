@@ -1,0 +1,85 @@
+package Principal;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Tocador {
+	WebDriver navegador;
+	float contador;
+
+	public Tocador() {
+		navegador = new ChromeDriver();
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\Paulo\\Desktop\\Buscador de Músicas Automático\\chromedriver.exe");
+	}
+
+	public void pularAnuncio() {
+//		try {
+		String anuncioXpath = "\"//*[@id=\"ad-text:6\"]\"";
+		Object pula = navegador.findElement(By.xpath(anuncioXpath));
+		if (pula != null) {
+			WebElement pulaAnuncioElement = (WebElement) pula;
+			pulaAnuncioElement.click();
+		}
+//		} catch (Exception e) {
+//			System.out.println("BUG EM PULAR ANUNCIO" + e);
+//		}
+	}
+
+	public void tocarMusica() {
+//		try {
+		String playXpath = "\"//*[@id=\"movie_player\"]/div[4]/button\"";
+		Object play = navegador.findElement(By.xpath(playXpath));
+		if (play != null) {
+			play = (WebElement) play;
+			WebElement playElement = navegador.findElement(By.xpath(playXpath));
+			playElement.click();
+			esperar(20000);
+		}
+//		} catch (Exception e) {
+//			System.out.println("BUG EM TOCAR MUSICA" + e);
+//		}
+
+	}
+
+	public void trocarMusica(String url) {
+		navegador.get(url);
+		esperar(1000);
+		tocarMusica();
+		esperar(6000); // espera do carregamento da página ou anuncio
+		pularAnuncio();
+		esperar(1000);
+		tocarMusica();
+	}
+
+	public void esperar(int miselesimos) {
+
+		try {
+		Thread.sleep(miselesimos);
+		} catch (Exception e) {
+			System.out.println("BUG EM ESPERAR" + e);
+		}
+	}
+
+	public void contadorMusica() {
+//		try {
+		String duracaoXpath = "\"//*[@id=\"movie_player\"]/div[32]/div[2]/div[1]/div[1]/span[2]/span[3]\"";
+		Object duracao = navegador.findElement(By.xpath(duracaoXpath));
+		if (duracao != null) {
+			WebElement duracaoElem = navegador.findElement(By.xpath(duracaoXpath));
+			String duracaoString = duracaoElem.getAttribute("innerHTML");
+			System.out.println(duracaoString);
+		}
+//		} catch (Exception e) {
+//			System.out.println("BUG EM TOCAR MUSICA" + e);
+//		}
+
+	}
+
+	public void encerrarMusicas() {
+		navegador.close();
+	}
+
+}

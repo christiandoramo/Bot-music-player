@@ -1,0 +1,45 @@
+package Principal;
+
+//import java.util.Scanner;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class ClassePrincipal {
+	public static void main(String[] args) {
+		try{
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Paulo\\Desktop\\Buscador de Músicas Automático\\chromedriver.exe");
+		WebDriver navegador = new ChromeDriver();
+		
+		String url1 = "https://www.youtube.com/watch?v=8EQzx-OzQmU&list=PLbwbsDZRZvsQM932Jcu9pKvoOLbU5m6ei&index=5";
+		navegador.get(url1);
+		
+		String playXpath = "//*[@id=\"movie_player\"]/div[4]/button";
+		Thread.sleep(5000);
+		WebElement playElement = navegador.findElement(By.xpath(playXpath));
+		playElement.click();
+		
+		
+		Thread.sleep(15000);
+		String duracaoA = "//*[@id=\"movie_player\"]/div[32]/div[2]/div[1]/div[1]/span[2]/span[3]";
+		System.out.println(duracaoA);
+		
+		
+		
+		String url2 ="https://www.youtube.com/watch?v=B5-X_3_Kpww&list=PLbwbsDZRZvsQM932Jcu9pKvoOLbU5m6ei";
+		navegador.get(url2);
+		String duracaoB = "//*[@id=\"movie_player\"]/div[32]/div[2]/div[1]/div[1]/span[2]/span[3]";
+		System.out.println(duracaoB);
+		Thread.sleep(5000);
+		playElement.click();
+
+		Thread.sleep(15000);
+		navegador.close();
+		}
+		catch(Exception e) {
+			System.out.println("Bugou: "+e);
+		}
+	}
+
+}
