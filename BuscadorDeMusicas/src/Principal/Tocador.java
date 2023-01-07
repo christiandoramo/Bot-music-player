@@ -1,68 +1,92 @@
 package Principal;
 
+//import java.util.Scanner;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.ArrayList;
+
 public class Tocador {
-	WebDriver navegador;
-	float contador;
+	private WebDriver navegador;
 
 	public Tocador() {
+		esperar(3000);
 		navegador = new ChromeDriver();
-		System.setProperty("webdriver.chrome.driver",
-				"C:\\Users\\Paulo\\Desktop\\Buscador de Músicas Automático\\chromedriver.exe");
 	}
 
-	public Boolean pularAnuncio() {
-		esperar(16000);
-		String anuncioXpath = "/div/div[3]/div/div[2]/span/button/div"; 
-		Object pula = null;
-		try {
-			pula = navegador.findElement(By.xpath(anuncioXpath));
-		} catch (Exception e) {
-			System.out.println("NÃO PEGOU O PULAR ANUNCIO " + e);
-		}
-		if (pula != null) {
-			WebElement pulaAnuncioElement = (WebElement) pula;
-			pulaAnuncioElement.click();
-			return false;
-		}
-		return true;
-	}
-
-	public Boolean tocarMusica() {
-		esperar(8000);
-		String playXpath = "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[1]/div[2]/div/div/ytd-player/div/div/div[4]/button";
+	public void tocarMusica(String musicaUrl) {
+		navegador.get(musicaUrl);
+		checarAnuncio();
+		String playCsspath = "#movie_player > div.ytp-cued-thumbnail-overlay > button";
 		Object play = null;
 		try {
-			play = navegador.findElement(By.xpath(playXpath));
+			play = navegador.findElement(By.cssSelector(playCsspath));
+			WebElement playElement = (WebElement) play;
+			playElement.click();
 		} catch (Exception e) {
 			System.out.println("NÃO PEGOU O PLAY DA MUSICA" + e);
 		}
-		if (play != null) {
-			WebElement playElement = (WebElement) play;
-			playElement.click();
-			contadorMusica();
-			esperar(20000);
-			return true;
-		}
-		return false;
+		esperar(contadorMusica());
+
 	}
 
-	public void trocarMusica(String url) {
-		navegador.get(url);
-		Boolean executou = false;
-		executou = tocarMusica(); // se executou executou recebe true
-		// testa se tem anuncio e se deve tentar tocar novamente
-		if (!executou) {
-			executou = pularAnuncio(); // se executou executou recebe false
-		}
-		if (!executou) {
-			executou = tocarMusica();
-		}
+	private void checarAnuncio() {
+//		ArrayList<WebElement> anunciosPulavel = (ArrayList<WebElement>) navegador
+//				.findElements(By.className("ytp-ad-text ytp-ad-skip-button-text"));
+//		ArrayList<WebElement> anunciosPreview = (ArrayList<WebElement>) navegador
+//				.findElements(By.className("ytp-ad-text ytp-ad-preview-text"));
 
+		// n aceitou classe composta
+
+		ArrayList<WebElement> anunciosPulavel = (ArrayList<WebElement>) navegador
+				.findElements(By.className("ytp-ad-skip-button-text"));
+		ArrayList<WebElement> anunciosPreview = (ArrayList<WebElement>) navegador
+				.findElements(By.className("yytp-ad-preview-text"));
+		for (int i = 0; i < 2; i++) {
+			esperar(1000);
+			for (WebElement elementoEsperavel : anunciosPreview) {
+				try {
+					System.out.println(elementoEsperavel.getAttribute("innerHTML"));
+					String duracaoString = elementoEsperavel.getAttribute("innerHTML");
+					int milesimos = Integer.parseInt(duracaoString);
+					esperar(milesimos);
+				} catch (Exception e) {
+					System.out.println("NÃO PEGOU A DURACAO DO ANUNCIO" + e);
+				}
+			}
+			for (WebElement elementoPulavel : anunciosPulavel) {
+				try {
+					System.out.println(elementoPulavel);
+					elementoPulavel.click();
+				} catch (Exception e) {
+					System.out.println("NÃO PEGOU O BOTAO DO ANUNCIO" + e);
+				}
+			}
+		}
+	}
+
+	private int contadorMusica() {
+		ArrayList<WebElement> duracoes = (ArrayList<WebElement>) navegador
+				.findElements(By.className("ytp-time-duration"));
+		for (WebElement elemento : duracoes) {
+			try {
+				System.out.println(elemento.getAttribute("innerHTML"));
+				if (elemento.getAttribute("innerHTML") != null) {
+					String duracaoString = elemento.getAttribute("innerHTML");
+					String[] arrayValores = duracaoString.split(":");
+					int milesimos = Integer.parseInt(arrayValores[0]) * 1000 * 60
+							+ Integer.parseInt(arrayValores[1]) * 1000;
+					return 10000;
+				}
+			}catch(Exception e){
+				System.out.println("Contador Musica não pego: "+ e);
+			
+			}
+		}
+		return 0;
 	}
 
 	public void esperar(int miselesimos) {
@@ -72,17 +96,6 @@ public class Tocador {
 			System.out.println("BUG EM ESPERAR" + e);
 		}
 	}
-
-	public void contadorMusica() {
-		String duracaoXpath = "/html/body/ytd-app/div[1]/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[1]/div[2]/div/div/ytd-player/div/div/div[27]/div[2]/div[1]/div[1]/span[2]/span[3]";
-		Object duracao = navegador.findElement(By.xpath(duracaoXpath));
-		if (duracao != null) {
-			WebElement duracaoElem = (WebElement) duracao;
-			String duracaoString = duracaoElem.getAttribute("innerHTML");
-			System.out.println(duracaoString);
-		}
-	}
-
 	public void encerrarMusicas() {
 		navegador.close();
 	}
