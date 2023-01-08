@@ -1,12 +1,8 @@
 package Principal;
-
-//import java.util.Scanner;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import java.util.ArrayList;
 
 public class Tocador {
@@ -79,7 +75,7 @@ public class Tocador {
 				String[] arrayValores = duracaoString.split(":");
 				int milesimos = Integer.parseInt(arrayValores[0]) * 1000 * 60
 						+ Integer.parseInt(arrayValores[1]) * 1000;
-				return 10000;
+				return milesimos - (milesimos-10000);
 			} catch (Exception e) {
 				System.out.println("Contador Musica não pego: " + e);
 
