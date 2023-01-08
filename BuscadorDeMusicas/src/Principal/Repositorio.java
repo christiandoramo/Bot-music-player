@@ -40,7 +40,6 @@ public class Repositorio {
 			} else if (primeiraLetra == 'ç' && ultimaLetra == 'ç') {
 				String generoString = linha.replaceAll("ç", "").trim();
 				System.out.println(generoString);
-				
 				genero = retornaGenero(generoString);
 			}
 		}

@@ -32,22 +32,24 @@ public class Tocador {
 	}
 
 	private void checarAnuncio() {
+		esperar(2000); // tempo de animação do botão demorado
 		ArrayList<WebElement> anunciosPreview = (ArrayList<WebElement>) navegador
 				.findElements(By.className("ytp-ad-preview-text"));
 		for (int i = 0; i < 2; i++) { // ATE 2 ANUNCIOS
 			for (WebElement elementoEsperavel : anunciosPreview) {
 				try {
+					esperar(1000); // tempo de animação do botão rapido
 					String duracaoString = elementoEsperavel.getAttribute("innerHTML");
 					System.out.println("tempo de anuncio: " + duracaoString);
 					int milesimos = Integer.parseInt(duracaoString);
 					esperar(milesimos);
 					System.out.println("ESPEROU TEMPO DO ANUNCIO");
-					esperar(500); // tempo de animação do botão
 					// antes do temporizador o botao não existe
 					// botao existira apenas quando o temporizador do anuncio acabar
 					ArrayList<WebElement> anunciosPulavel = (ArrayList<WebElement>) navegador
 							.findElements(By.className("ytp-ad-skip-button-text"));
 					for (WebElement elementoPulavel : anunciosPulavel) {
+						esperar(1000); // tempo de animação do botão
 						try {
 							System.out.println(elementoPulavel);
 							elementoPulavel.click();
