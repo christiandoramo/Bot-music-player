@@ -19,51 +19,51 @@ public class Tocador {
 
 	public void tocarMusica(String musicaUrl) {
 		navegador.get(musicaUrl);
-		checarAnuncio();
-		String playCsspath = "#movie_player > div.ytp-cued-thumbnail-overlay > button";
-		Object play = null;
 		try {
-			play = navegador.findElement(By.cssSelector(playCsspath));
-			WebElement playElement = (WebElement) play;
-			playElement.click();
+			ArrayList<WebElement> botoes = (ArrayList<WebElement>) navegador
+					.findElements(By.className("ytp-large-play-button"));
+			for (WebElement botao : botoes) {
+				botao.click();
+				System.out.println("CLICKOU NO PLAY DA MUSICA");
+			}
 		} catch (Exception e) {
-			System.out.println("NÃO PEGOU O PLAY DA MUSICA" + e);
+			System.out.println("NÃO PEGOU O PLAY DA MUSICA " + e);
 		}
+		checarAnuncio();
 		esperar(contadorMusica());
 
 	}
 
 	private void checarAnuncio() {
-//		ArrayList<WebElement> anunciosPulavel = (ArrayList<WebElement>) navegador
-//				.findElements(By.className("ytp-ad-text ytp-ad-skip-button-text"));
-//		ArrayList<WebElement> anunciosPreview = (ArrayList<WebElement>) navegador
-//				.findElements(By.className("ytp-ad-text ytp-ad-preview-text"));
-
-		// n aceitou classe composta
-
-		ArrayList<WebElement> anunciosPulavel = (ArrayList<WebElement>) navegador
-				.findElements(By.className("ytp-ad-skip-button-text"));
 		ArrayList<WebElement> anunciosPreview = (ArrayList<WebElement>) navegador
-				.findElements(By.className("yytp-ad-preview-text"));
-		for (int i = 0; i < 2; i++) {
-			esperar(1000);
+				.findElements(By.className("ytp-ad-preview-text"));
+		for (int i = 0; i < 2; i++) { // ATE 2 ANUNCIOS
 			for (WebElement elementoEsperavel : anunciosPreview) {
 				try {
-					System.out.println(elementoEsperavel.getAttribute("innerHTML"));
 					String duracaoString = elementoEsperavel.getAttribute("innerHTML");
+					System.out.println("tempo de anuncio: " + duracaoString);
 					int milesimos = Integer.parseInt(duracaoString);
 					esperar(milesimos);
+					System.out.println("ESPEROU TEMPO DO ANUNCIO");
+					esperar(500); // tempo de animação do botão
+					// antes do temporizador o botao não existe
+					// botao existira apenas quando o temporizador do anuncio acabar
+					ArrayList<WebElement> anunciosPulavel = (ArrayList<WebElement>) navegador
+							.findElements(By.className("ytp-ad-skip-button-text"));
+					for (WebElement elementoPulavel : anunciosPulavel) {
+						try {
+							System.out.println(elementoPulavel);
+							elementoPulavel.click();
+							System.out.println("PULOU ANUNCIO");
+						} catch (Exception e) {
+							System.out.println("NÃO PEGOU O BOTAO DO ANUNCIO" + e);
+						}
+					}
 				} catch (Exception e) {
 					System.out.println("NÃO PEGOU A DURACAO DO ANUNCIO" + e);
+					System.out.println("NÃO CLICKOU NO ANUNCIO" + e);
 				}
-			}
-			for (WebElement elementoPulavel : anunciosPulavel) {
-				try {
-					System.out.println(elementoPulavel);
-					elementoPulavel.click();
-				} catch (Exception e) {
-					System.out.println("NÃO PEGOU O BOTAO DO ANUNCIO" + e);
-				}
+				esperar(1000); // CARREGARÁ PROXIMO ANUNCIO?? OU CARREGAMENTO DO TXT DO TEMPO DE MUSICA
 			}
 		}
 	}
@@ -74,16 +74,15 @@ public class Tocador {
 		for (WebElement elemento : duracoes) {
 			try {
 				System.out.println(elemento.getAttribute("innerHTML"));
-				if (elemento.getAttribute("innerHTML") != null) {
-					String duracaoString = elemento.getAttribute("innerHTML");
-					String[] arrayValores = duracaoString.split(":");
-					int milesimos = Integer.parseInt(arrayValores[0]) * 1000 * 60
-							+ Integer.parseInt(arrayValores[1]) * 1000;
-					return 10000;
-				}
-			}catch(Exception e){
-				System.out.println("Contador Musica não pego: "+ e);
-			
+				String duracaoString = elemento.getAttribute("innerHTML");
+				System.out.println("tempo da musica: " + duracaoString);
+				String[] arrayValores = duracaoString.split(":");
+				int milesimos = Integer.parseInt(arrayValores[0]) * 1000 * 60
+						+ Integer.parseInt(arrayValores[1]) * 1000;
+				return 10000;
+			} catch (Exception e) {
+				System.out.println("Contador Musica não pego: " + e);
+
 			}
 		}
 		return 0;
@@ -96,8 +95,8 @@ public class Tocador {
 			System.out.println("BUG EM ESPERAR" + e);
 		}
 	}
+
 	public void encerrarMusicas() {
 		navegador.close();
 	}
-
 }
