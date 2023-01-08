@@ -1,4 +1,5 @@
 package Principal;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +14,8 @@ public class Tocador {
 		navegador = new ChromeDriver();
 	}
 
-	public void tocarMusica(String musicaUrl) {
+	public void tocarMusica(Musica musica) {
+		String musicaUrl = musica.getLink();
 		navegador.get(musicaUrl);
 		try {
 			ArrayList<WebElement> botoes = (ArrayList<WebElement>) navegador
@@ -27,7 +29,6 @@ public class Tocador {
 		}
 		checarAnuncio();
 		esperar(contadorMusica());
-
 	}
 
 	private void checarAnuncio() {
@@ -75,10 +76,9 @@ public class Tocador {
 				String[] arrayValores = duracaoString.split(":");
 				int milesimos = Integer.parseInt(arrayValores[0]) * 1000 * 60
 						+ Integer.parseInt(arrayValores[1]) * 1000;
-				return milesimos - (milesimos-10000);
+				return milesimos;
 			} catch (Exception e) {
 				System.out.println("Contador Musica não pego: " + e);
-
 			}
 		}
 		return 0;

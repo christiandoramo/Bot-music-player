@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item key="org.eclipse.jdt.ui.lastextjar" value="C:\Users\Paulo\Desktop\repo\buscador-de-musicas\BuscadorDeMusicas\src\Principal\myLib"/>
+	<item key="org.eclipse.jdt.ui.lastextjar" value="C:\Users\chris\Desktop\repo\selenium"/>
 	<item key="org.eclipse.jdt.ui.lastuserlibrary" value="C:\Users\Paulo\Desktop\repo\buscador-de-musicas\BuscadorDeMusicas\src\myLib\slf4j-api-2.0.3.jar"/>
 	<item key="UserLibraryLoadSaveDialog.size" value="480,510"/>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
@@ -100,5 +100,12 @@
 		<item key="DIALOG_WIDTH" value="517"/>
 		<item key="DIALOG_HEIGHT" value="678"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="RefactoringWizard.preview">
+		<item key="width" value="600"/>
+		<item key="height" value="400"/>
+	</section>
+	<section name="SelfEncapsulateFieldWizard">
+		<item key="GenerateJavadoc" value="false"/>
 	</section>
 </section>

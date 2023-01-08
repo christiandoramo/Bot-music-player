@@ -4,36 +4,54 @@ import java.util.Objects;
 
 public class Musica {
 	private Genero genero;
-	private String artist;
-	private String name;
-	
-	public Musica(Genero genero, String artist, String name) {
+	private String artista;
+	private String nome;
+	private String link;
+
+	public Musica(Genero genero, String artista, String nome, String link) {
 		this.genero = genero;
-		this.artist = artist;
-		this.name = name;
+		this.artista = artista;
+		this.nome = nome;
+		this.link = link;
 	}
+
 	public Genero getGenero() {
 		return genero;
 	}
+
 	public void setGenero(Genero genero) {
 		this.genero = genero;
 	}
-	public String getArtist() {
-		return artist;
+
+	public String getArtista() {
+		return artista;
 	}
-	public void setArtist(String artist) {
-		this.artist = artist;
+
+	public void setArtist(String artista) {
+		this.artista = artista;
 	}
-	public String getName() {
-		return name;
+
+	public String getNome() {
+		return nome;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setName(String nome) {
+		this.nome = nome;
 	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(artist, genero, name);
+		return Objects.hash(artista, nome);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -43,14 +61,11 @@ public class Musica {
 		if (getClass() != obj.getClass())
 			return false;
 		Musica other = (Musica) obj;
-		return Objects.equals(artist, other.artist) && genero == other.genero && Objects.equals(name, other.name);
+		return Objects.equals(artista, other.artista) && Objects.equals(nome, other.nome);
 	}
+
 	@Override
 	public String toString() {
-		return "Musica [artist=" + artist + ", name=" + name + "]";
+		return "Genero: " + getGenero() + " Artista: " + getArtista() + " Nome: " + getNome();
 	}
-	
-	
-	
-	
 }
